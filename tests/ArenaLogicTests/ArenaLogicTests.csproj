@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../../Systems/Arenas/ArenaBounds.cs" Link="ArenaBounds.cs" />
+    <Compile Include="../../Systems/Arenas/ArenaSessionState.cs" Link="ArenaSessionState.cs" />
+    <Compile Include="../../Systems/Arenas/ArenaLayout.cs" Link="ArenaLayout.cs" />
+  </ItemGroup>
+</Project>
