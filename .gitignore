@@ -1,0 +1,31 @@
+# Build outputs and tModLoader artifacts
+bin/
+obj/
+*.tmod
+*.tmod.*
+
+# IDE and editor files
+.vs/
+.vscode/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Operating-system and temporary files
+Thumbs.db
+Desktop.ini
+*.tmp
+*.temp
+*.log
+
+# Local configuration and secrets
+appsettings.Local.json
+*.secret
+*.secrets
+.env
+.env.*
+!*.env.example
+
+# Local tModLoader installation overrides
+Directory.Build.props

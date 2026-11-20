@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <!-- Override with /p:TModLoaderInstallDir="..." when tModLoader is installed elsewhere. -->
+    <TModLoaderInstallDir Condition="'$(TModLoaderInstallDir)' == ''">C:\Program Files (x86)\Steam\steamapps\common\tModLoader</TModLoaderInstallDir>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <Import Project="$(TModLoaderInstallDir)\tMLMod.targets" />
+</Project>

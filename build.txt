@@ -1,0 +1,7 @@
+displayName = Henrik's Boss Arenas
+author = Henrik
+version = 0.1.0
+side = Both
+modReferences = CalamityMod
+includeSource = true
+buildIgnore = *.csproj, *.user, bin/*, obj/*, .vs/*
