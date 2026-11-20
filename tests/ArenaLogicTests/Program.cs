@@ -35,6 +35,25 @@ var tests = new (string Name, Action Run)[]
         Assert.True(ArenaLayout.IsBoundary(relativeX: 0, relativeY: 10, width: 180, height: 90, floorOffset: 8));
         Assert.True(ArenaLayout.IsBoundary(relativeX: 90, relativeY: 81, width: 180, height: 90, floorOffset: 8));
         Assert.False(ArenaLayout.IsBoundary(relativeX: 90, relativeY: 10, width: 180, height: 90, floorOffset: 8));
+    }),
+    ("Places the subworld arena spawn inside its boundaries", () =>
+    {
+        Assert.True(ArenaSubworldLayout.IsSpawnInsideWorld());
+    }),
+    ("Uses the full subworld identifier required by Subworld Library", () =>
+    {
+        Assert.Equal("HenriksBossArenas/DesertScourgeArena", ArenaSubworldId.Create("HenriksBossArenas", "DesertScourgeArena"));
+    }),
+    ("Clears arena participants when a session ends", () =>
+    {
+        var roster = new ArenaParticipantRoster();
+        roster.Add("Host");
+        roster.Add("Guest");
+
+        roster.Clear();
+
+        Assert.False(roster.Contains("Host"));
+        Assert.False(roster.Contains("Guest"));
     })
 };
 
@@ -70,6 +89,14 @@ static class Assert
         if (value)
         {
             throw new InvalidOperationException("Expected false but was true.");
+        }
+    }
+
+    public static void Equal(string expected, string actual)
+    {
+        if (expected != actual)
+        {
+            throw new InvalidOperationException($"Expected '{expected}' but was '{actual}'.");
         }
     }
 }

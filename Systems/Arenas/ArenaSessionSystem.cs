@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -9,9 +7,7 @@ namespace HenriksBossArenas.Systems.Arenas;
 public sealed class ArenaSessionSystem : ModSystem
 {
     private readonly ArenaSessionState state = new();
-    private readonly List<ArenaParticipant> participants = new();
-    private ArenaTileSnapshot? snapshot;
-    private Rectangle site;
+    private readonly ArenaParticipantRoster participants = new();
 
     public bool HasActiveSession => state.IsActive;
 
@@ -22,16 +18,12 @@ public sealed class ArenaSessionSystem : ModSystem
             return false;
         }
 
-        boss.TargetClosest();
-        Player initiator = Main.player[boss.target];
-        if (!initiator.active || !ArenaSiteFinder.TryFindDesertSite(initiator, out site) || !state.TryBegin(boss.whoAmI, boss.type))
+        if (!state.TryBegin(boss.whoAmI, boss.type))
         {
             return false;
         }
 
-        snapshot = ArenaTileSnapshot.Capture(site);
-        DesertScourgeArenaBuilder.Build(site);
-
+        bool transitionStarted = false;
         foreach (Player player in Main.ActivePlayers)
         {
             if (player.dead)
@@ -39,11 +31,17 @@ public sealed class ArenaSessionSystem : ModSystem
                 continue;
             }
 
-            participants.Add(new ArenaParticipant(player.name, player.position));
-            TeleportPlayerToArena(player);
+            participants.Add(player.name);
+            transitionStarted |= DesertScourgeArenaSubworld.MovePlayerToArena(player.whoAmI);
         }
 
-        boss.Center = GetArenaSpawnPosition();
+        if (!transitionStarted)
+        {
+            EndSession();
+            return false;
+        }
+
+        boss.active = false;
         boss.netUpdate = true;
         NetMessage.SendData(MessageID.SyncNPC, number: boss.whoAmI);
         return true;
@@ -73,39 +71,12 @@ public sealed class ArenaSessionSystem : ModSystem
 
     public override void OnWorldUnload()
     {
-        participants.Clear();
-        snapshot = null;
-        state.Clear();
+        EndSession();
     }
 
     private void EndSession()
     {
-        foreach (ArenaParticipant participant in participants)
-        {
-            foreach (Player player in Main.ActivePlayers)
-            {
-                if (player.name == participant.Name)
-                {
-                    player.Teleport(participant.OriginalPosition);
-                    NetMessage.SendData(MessageID.SyncPlayer, number: player.whoAmI);
-                    break;
-                }
-            }
-        }
-
-        snapshot?.Restore();
-        NetMessage.SendTileSquare(-1, site.Center.X, site.Center.Y, site.Width, site.Height);
         participants.Clear();
-        snapshot = null;
         state.Clear();
     }
-
-    private void TeleportPlayerToArena(Player player)
-    {
-        Vector2 spawnPosition = GetArenaSpawnPosition() + new Vector2((player.whoAmI % 8) * 48f, 0f);
-        player.Teleport(spawnPosition);
-        NetMessage.SendData(MessageID.SyncPlayer, number: player.whoAmI);
-    }
-
-    private Vector2 GetArenaSpawnPosition() => new((site.Left + site.Width / 2) * 16f, (site.Bottom - 12) * 16f);
 }

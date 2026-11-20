@@ -2,6 +2,6 @@ displayName = Henrik's Boss Arenas
 author = Henrik
 version = 0.1.0
 side = Both
-modReferences = CalamityMod
+modReferences = CalamityMod, SubworldLibrary
 includeSource = true
 buildIgnore = *.csproj, *.user, bin/*, obj/*, .vs/*
