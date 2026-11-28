@@ -11,6 +11,7 @@
     <Compile Include="../../Systems/Arenas/ArenaDefeatEvaluator.cs" Link="ArenaDefeatEvaluator.cs" />
     <Compile Include="../../Systems/Arenas/ArenaPlayerBounds.cs" Link="ArenaPlayerBounds.cs" />
     <Compile Include="../../Systems/Arenas/ArenaItemBounds.cs" Link="ArenaItemBounds.cs" />
+    <Compile Include="../../Systems/Arenas/ArenaBackgroundTiling.cs" Link="ArenaBackgroundTiling.cs" />
     <Compile Include="../../Systems/Arenas/ArenaLayout.cs" Link="ArenaLayout.cs" />
     <Compile Include="../../Systems/Arenas/ArenaSubworldLayout.cs" Link="ArenaSubworldLayout.cs" />
     <Compile Include="../../Systems/Arenas/ArenaParticipantRoster.cs" Link="ArenaParticipantRoster.cs" />

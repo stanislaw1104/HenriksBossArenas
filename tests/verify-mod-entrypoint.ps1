@@ -5,6 +5,16 @@ param(
 
 $resolvedAssemblyPath = (Resolve-Path -LiteralPath $AssemblyPath).Path
 $resolvedTModLoaderInstallDir = (Resolve-Path -LiteralPath $TModLoaderInstallDir).Path
+$buildPropertiesPath = Join-Path $PSScriptRoot '..\build.txt'
+$backgroundPath = Join-Path $PSScriptRoot '..\Assets\Backgrounds\DesertScourgeArena.png'
+
+if (-not (Select-String -LiteralPath $buildPropertiesPath -Pattern '^buildIgnore\s*=.*(^|,)tests/\*' -Quiet)) {
+    throw 'build.txt must exclude tests/* so tModLoader does not compile test programs into the mod assembly.'
+}
+
+if (-not (Test-Path -LiteralPath $backgroundPath)) {
+    throw 'The Desert Scourge arena background texture is missing.'
+}
 
 [System.Runtime.Loader.AssemblyLoadContext]::Default.add_Resolving({
     param($context, $assemblyName)

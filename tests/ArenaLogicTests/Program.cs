@@ -101,6 +101,12 @@ var tests = new (string Name, Action Run)[]
         Assert.Equal(ArenaSubworldLayout.FloorTileY * 16f - 15f, floor.CenterY);
         Assert.True(floor.WasClampedY);
     }),
+    ("Keeps the arena background within one seamless panorama", () =>
+    {
+        Assert.Equal(-501f, ArenaBackgroundTiling.GetSingleBackgroundX(relativeCameraX: 0f, screenWidth: 1366, backgroundWidth: 2368, parallax: 0.1f));
+        Assert.Equal(-725f, ArenaBackgroundTiling.GetSingleBackgroundX(relativeCameraX: 2240f, screenWidth: 1366, backgroundWidth: 2368, parallax: 0.1f));
+        Assert.Equal(-1002f, ArenaBackgroundTiling.GetSingleBackgroundX(relativeCameraX: 10000f, screenWidth: 1366, backgroundWidth: 2368, parallax: 0.1f));
+    }),
     ("Keeps only the arena boundary as solid structure", () =>
     {
         Assert.True(ArenaLayout.IsBoundary(relativeX: 0, relativeY: 10, width: 180, height: 90, floorOffset: 8));

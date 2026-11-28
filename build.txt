@@ -4,4 +4,4 @@ version = 0.1.0
 side = Both
 modReferences = CalamityMod, SubworldLibrary
 includeSource = true
-buildIgnore = *.csproj, *.user, bin/*, obj/*, .vs/*
+buildIgnore = *.csproj,*.user,bin/*,obj/*,.vs/*,tests/*
